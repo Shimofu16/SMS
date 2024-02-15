@@ -17,6 +17,8 @@ class EditSchedule extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\ForceDeleteAction::make(),
+            Actions\RestoreAction::make(),
         ];
     }
 
@@ -45,7 +47,6 @@ class EditSchedule extends EditRecord
                 'start' => $class['start'],
                 'end' => $class['end'],
             ]);
-
         }
         $record->update($data);
 
@@ -53,5 +54,8 @@ class EditSchedule extends EditRecord
         return $record;
     }
 
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -49,7 +49,6 @@ class RegistrarPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Registrar/Resources'), for: 'App\\Filament\\Registrar\\Resources')
             ->discoverPages(in: app_path('Filament/Registrar/Pages'), for: 'App\\Filament\\Registrar\\Pages')
             ->pages([
-                Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Registrar/Widgets'), for: 'App\\Filament\\Registrar\\Widgets')
             ->widgets([

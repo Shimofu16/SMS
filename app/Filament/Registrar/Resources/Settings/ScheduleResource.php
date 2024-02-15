@@ -27,6 +27,11 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\Group;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 
 class ScheduleResource extends Resource
@@ -80,7 +85,8 @@ class ScheduleResource extends Resource
                             ->schema([
                                 DatePicker::make('date')
                                     ->after(now()->subDay())
-                                    ->required(),
+                                    ->required()
+                                    ->columnSpanFull(),
                                 TimePicker::make('start')
                                     ->seconds(false)
                                     ->required(),
@@ -90,9 +96,22 @@ class ScheduleResource extends Resource
                                     ->required(),
 
                             ])
+                            ->cloneable()
+                            ->reorderable(false)
+                            ->grid(2)
+                            ->columns(2)
 
-                    ])
-                    ->columns(2),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $setting = getCurrentSetting();
+        return parent::getEloquentQuery()
+            ->where('school_year_id', $setting->school_year_id)
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 
@@ -100,26 +119,54 @@ class ScheduleResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('code')
+                    ->searchable(),
+                TextColumn::make('subject.name')
+                    ->searchable(),
+                TextColumn::make('teacher.name')
+                    ->searchable(),
+                TextColumn::make('gradeLevel.name')
+                    ->searchable(),
+                TextColumn::make('section.name')
+                    ->searchable(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    // ...
                 ]),
             ]);
     }
 
-    public static function getRelations(): array
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return [
-            //
-        ];
+        return $infolist
+            ->schema([
+                RepeatableEntry::make('classes')
+                    ->schema([
+                        TextEntry::make('date')
+                            ->date(),
+                        Group::make([
+                            TextEntry::make('start')
+                                ->time('h:m A'),
+                            TextEntry::make('end')
+                                ->time('h:m A'),
+
+                        ])
+                            ->columns(2)
+
+                    ])
+                    ->columnSpanFull(2)
+            ]);
     }
 
     public static function getPages(): array

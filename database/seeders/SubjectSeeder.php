@@ -14,16 +14,16 @@ class SubjectSeeder extends Seeder
     public function run(): void
     {
         $subjects = [
-            ['subject' => 'Mother Tongue'],
-            ['subject' => 'Filipino'],
-            ['subject' => 'English'],
-            ['subject' => 'Science'],
-            ['subject' => 'Mathematics'],
-            ['subject' => 'Araling Panglipunan'],
-            ['subject' => 'EPP/TLE'],
-            ['subject' => 'MAPEH'],
-            ['subject' => 'Edukasyon sa Pagpapakatao'],
-            ['subject' => 'Christian Living Education'],
+            ['name' => 'Mother Tongue'],
+            ['name' => 'Filipino'],
+            ['name' => 'English'],
+            ['name' => 'Science'],
+            ['name' => 'Mathematics'],
+            ['name' => 'Araling Panglipunan'],
+            ['name' => 'EPP/TLE'],
+            ['name' => 'MAPEH'],
+            ['name' => 'Edukasyon sa Pagpapakatao'],
+            ['name' => 'Christian Living Education'],
         ];
         foreach ($subjects as $subject) {
             Subject::create($subject);

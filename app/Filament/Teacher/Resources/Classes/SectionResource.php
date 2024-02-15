@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Filament\Teacher\Resources;
+namespace App\Filament\Teacher\Resources\Classes;
 
 use App\Enums\StudentEnrollmentPaymentStatus;
 use App\Enums\StudentEnrollmentStatusEnum;
-use App\Filament\Teacher\Resources\AdvisoryClassResource\Pages;
-use App\Filament\Teacher\Resources\AdvisoryClassResource\RelationManagers;
-use App\Models\AdvisoryClass;
+use App\Filament\Teacher\Resources\Classes\SectionResource\Pages;
+use App\Filament\Teacher\Resources\Classes\SectionResource\RelationManagers;
 use App\Models\StudentEnrollment;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,13 +17,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
-class AdvisoryClassResource extends Resource
+class SectionResource extends Resource
 {
 
     protected static ?string $model = StudentEnrollment::class;
     // protected static ?string $model = Section::class;
     protected static ?string $navigationGroup = 'Classes';
-    protected static ?string $navigationLabel  = 'Advisory Class';
+    protected static ?string $navigationLabel  = 'Section';
 
     public static function getEloquentQuery(): Builder
     {
@@ -51,19 +50,14 @@ class AdvisoryClassResource extends Resource
                 TextColumn::make('student.gender')
                     ->searchable(),
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-            ])
-            ->bulkActions([]);
+            ->emptyStateHeading('No section yet');
     }
+
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageAdvisoryClasses::route('/'),
+            'index' => Pages\ManageSections::route('/'),
         ];
     }
 }

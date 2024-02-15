@@ -19,7 +19,7 @@ class Schedule extends Model
         'teacher_id',
         'school_year_id',
     ];
-    
+
 
     public function subject(): BelongsTo
     {
@@ -50,4 +50,10 @@ class Schedule extends Model
     {
         return $this->hasMany(ScheduleClass::class);
     }
+    public function grades(): HasMany
+    {
+        return $this->hasMany(StudentGrade::class);
+    }
+
+
 }

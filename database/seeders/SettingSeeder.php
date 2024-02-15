@@ -14,9 +14,10 @@ class SettingSeeder extends Seeder
      */
     public function run(): void
     {
-        $school_year = SchoolYear::where('is_current', true)->first();
+        $school_year = SchoolYear::find(1);
         Setting::create([
             'school_year_id' => $school_year->id,
+            'is_current' => true,
         ]);
     }
 }

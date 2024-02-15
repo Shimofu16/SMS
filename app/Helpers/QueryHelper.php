@@ -4,6 +4,7 @@ use App\Models\SchoolYear;
 use App\Models\Section;
 use App\Models\Setting;
 use App\Models\Student;
+use App\Models\StudentGrade;
 
 if (!function_exists('getCurrentSetting')) {
     /**
@@ -15,8 +16,7 @@ if (!function_exists('getCurrentSetting')) {
      */
     function getCurrentSetting()
     {
-        $school_year_id = SchoolYear::where('is_current', true)->first()->id;
-        return Setting::where('school_year_id', $school_year_id)->first();
+        return Setting::where('is_current', true)->first();
     }
 }
 
@@ -74,5 +74,61 @@ if (!function_exists('countWithStatus')) {
                 $query->where('status', $status);
             })
             ->count();
+    }
+}
+if (!function_exists('isAllStudentsHasGrades')) {
+    /**
+     * Get current setting.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function isAllStudentsHasGrades()
+    {
+        $isALlHasGrades = false;
+        $setting = getCurrentSetting();
+        $students = Student::all();
+        foreach ($students as $key => $student) {
+            switch ($setting->current_grading) {
+                case 'first':
+                    $grade = $student->grades()
+                        ->where('grade_level_id', $student->enrollment->grade_level_id)
+                        ->where('school_year_id', $setting->school_year_id)
+                        ->whereJsonContains('grades->first', 0) //grades - first not equal 0
+                        ->first();
+                    break;
+                case 'second':
+                    $grade = $student->grades()
+                        ->where('grade_level_id', $student->enrollment->grade_level_id)
+                        ->where('school_year_id', $setting->school_year_id)
+                        ->whereJsonContains('grades->second', 0) //grades - first not equal 0
+                        ->first();
+                    break;
+                case 'third':
+                    $grade = $student->grades()
+                        ->where('grade_level_id', $student->enrollment->grade_level_id)
+                        ->where('school_year_id', $setting->school_year_id)
+                        ->whereJsonContains('grades->third', 0) //grades - first not equal 0
+                        ->first();
+                    break;
+                case 'fourth':
+                    $grade = $student->grades()
+                        ->where('grade_level_id', $student->enrollment->grade_level_id)
+                        ->where('school_year_id', $setting->school_year_id)
+                        ->whereJsonContains('grades->fourth', 0) //grades - first not equal 0
+                        ->first();
+                    break;
+            }
+            $grade = $student->grades()
+                ->where('grade_level_id', $student->enrollment->grade_level_id)
+                ->where('school_year_id', $setting->school_year_id)
+                ->whereJsonContains('grades->first', 0) //grades - first not equal 0
+                ->first();
+            if ($grade) {
+                $isALlHasGrades = true;
+            }
+        }
+        return $isALlHasGrades;
     }
 }

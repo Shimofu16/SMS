@@ -15,12 +15,14 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Swis\Filament\Backgrounds\ImageProviders\MyImages;
 use Filament\Http\Middleware\DisableBladeIconComponents;
-use ShuvroRoy\FilamentSpatieLaravelBackup\Pages\Backups;
+use App\Filament\Pages\Backups;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -35,6 +37,11 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Settings') // enrolled and enrollee students
+                    ->icon('heroicon-o-cog-6-tooth'),
+            ])
             ->plugins([
                 FilamentBackgroundsPlugin::make(),
                 FilamentSpatieLaravelBackupPlugin::make()
@@ -47,7 +54,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
-                Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([

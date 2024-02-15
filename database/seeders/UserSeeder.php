@@ -42,14 +42,14 @@ class UserSeeder extends Seeder
         }
         $setting = getCurrentSetting();
         $teacher = Teacher::find(1);
-        $student = Student::with('enrollments')
-            ->whereHas('enrollments', function ($query) use ($setting) {
-                $query
-                    ->where('school_year_id', $setting->school_year_id)
-                    ->whereJsonContains('payments->status', StudentEnrollmentPaymentStatus::PAID->value)
-                    ->where('status', StudentEnrollmentStatusEnum::ACCEPTED->value);
-            })
-            ->first();
+        // $student = Student::with('enrollments')
+        //     ->whereHas('enrollments', function ($query) use ($setting) {
+        //         $query
+        //             ->where('school_year_id', $setting->school_year_id)
+        //             ->whereJsonContains('payments->status', StudentEnrollmentPaymentStatus::PAID->value)
+        //             ->where('status', StudentEnrollmentStatusEnum::ACCEPTED->value);
+        //     })
+        //     ->first();
         $users = [
             [
                 'name' => 'Administrator',
@@ -67,13 +67,6 @@ class UserSeeder extends Seeder
                 'name' => $teacher->name,
                 'email' => $teacher->email,
                 'teacher_id' => $teacher->id,
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-            ],
-            [
-                'name' => $student->full_name,
-                'email' => $student->email,
-                'student_id' => $student->id,
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
             ],

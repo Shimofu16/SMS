@@ -17,7 +17,7 @@ class SchoolYearSeeder extends Seeder
             'slug' => '2021-2022',
             'start_date' => '2021-08-01',
             'end_date' => '2022-05-31',
-            'is_current' => true,
+            
         ];
         SchoolYear::create($school_years);
     }

@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2b071193488c598b4e68075abe33a79",
+    "content-hash": "1c95b0209953db296ad527e6647cb1ff",
     "packages": [
+        {
+            "name": "aymanalhattami/filament-page-with-sidebar",
+            "version": "2.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aymanalhattami/filament-page-with-sidebar.git",
+                "reference": "5b1fa322e0a913a36925d8fd7e83e085970db539"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aymanalhattami/filament-page-with-sidebar/zipball/5b1fa322e0a913a36925d8fd7e83e085970db539",
+                "reference": "5b1fa322e0a913a36925d8fd7e83e085970db539",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "laravel/framework": "^10.0",
+                "spatie/laravel-package-tools": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AymanAlhattami\\FilamentPageWithSidebar\\FilamentPageWithSidebarServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AymanAlhattami\\FilamentPageWithSidebar\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ayman Alhattami",
+                    "email": "ayman.m.alhattami@gmail.com"
+                }
+            ],
+            "description": "Organize resource pages in sidebar instead of putting all the buttons and links elsewhere in order to make navigation between pages more comfortable.",
+            "support": {
+                "issues": "https://github.com/aymanalhattami/filament-page-with-sidebar/issues",
+                "source": "https://github.com/aymanalhattami/filament-page-with-sidebar/tree/2.4.2"
+            },
+            "time": "2023-11-01T14:17:52+00:00"
+        },
         {
             "name": "blade-ui-kit/blade-heroicons",
             "version": "2.1.0",
@@ -4854,6 +4903,77 @@
                 }
             ],
             "time": "2023-02-14T16:54:54+00:00"
+        },
+        {
+            "name": "saade/filament-fullcalendar",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saade/filament-fullcalendar.git",
+                "reference": "cd275468ab4f7a7b903d50bd3c45850cceb802ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saade/filament-fullcalendar/zipball/cd275468ab4f7a7b903d50bd3c45850cceb802ff",
+                "reference": "cd275468ab4f7a7b903d50bd3c45850cceb802ff",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^9.0|^10.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.13.5"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^6.0|^7.0",
+                "nunomaduro/larastan": "^1.0|^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Saade\\FilamentFullCalendar\\FilamentFullCalendarServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Saade\\FilamentFullCalendar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Saade",
+                    "email": "saade@outlook.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Most Popular JavaScript Calendar integrated with Filament 💛",
+            "homepage": "https://github.com/saade/filament-fullcalendar",
+            "keywords": [
+                "filament-fullcalendar",
+                "laravel",
+                "saade"
+            ],
+            "support": {
+                "issues": "https://github.com/saade/filament-fullcalendar/issues",
+                "source": "https://github.com/saade/filament-fullcalendar/tree/v3.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/saade",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-09-26T22:01:14+00:00"
         },
         {
             "name": "shuvroroy/filament-spatie-laravel-backup",

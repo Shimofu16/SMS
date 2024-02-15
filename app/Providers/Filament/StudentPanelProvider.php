@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Student\Resources\ScheduleResource\Widgets\ScheduleCalendar;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -17,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 
 class StudentPanelProvider extends PanelProvider
@@ -33,16 +35,16 @@ class StudentPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentBackgroundsPlugin::make(),
+                FilamentFullCalendarPlugin::make()
+                    ->timezone('Asia/Manila')
+                    ->plugins(['dayGrid', 'timeGrid'])
             ])
             ->discoverResources(in: app_path('Filament/Student/Resources'), for: 'App\\Filament\\Student\\Resources')
             ->discoverPages(in: app_path('Filament/Student/Pages'), for: 'App\\Filament\\Student\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Student/Widgets'), for: 'App\\Filament\\Student\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                ScheduleCalendar::class
             ])
             ->middleware([
                 EncryptCookies::class,

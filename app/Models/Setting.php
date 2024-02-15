@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Setting extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'school_year_id',
-        'grade_level_id',
         'current_grading',
         'enrollment_status',
+        'is_grade_editable',
+        'is_current',
     ];
 
     public function schoolYear()

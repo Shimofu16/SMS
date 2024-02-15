@@ -193,32 +193,6 @@ class EnrolledResource extends Resource
                             ->extraAttributes([
                                 'style' => 'padding: 0;',
                             ]),
-                        Tabs\Tab::make('Guardian Information')
-                            ->schema([
-                                TextEntry::make('guardian.name')
-                                    ->label('Name'),
-                                TextEntry::make('guardian.birthday')
-                                    ->getStateUsing(fn ($record) => date('F j, Y', strtotime($record->guardian->birthday)))
-                                    ->label('Birthday'),
-                                TextEntry::make('guardian.age')
-                                    ->getStateUsing(fn ($record) => Carbon::parse($record->guardian->birthday)->age)
-                                    ->label('Age'),
-                                TextEntry::make('guardian.occupation')
-                                    ->label('Occupation'),
-                                TextEntry::make('guardian.address')
-                                    ->label('Address')
-                                    ->columnSpanFull(),
-                                RepeatableEntry::make('guardian.contacts')
-                                    ->schema([
-                                        TextEntry::make('contact')
-                                            ->inlineLabel(),
-                                        TextEntry::make('type')
-                                            ->inlineLabel(),
-                                    ])
-                                    ->label('Contacts')
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns(4),
                         Tabs\Tab::make('Enrollment Information')
                             ->schema([
                                 TextEntry::make('enrollment.gradeLevel.name')

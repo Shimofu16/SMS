@@ -23,7 +23,7 @@ class StudentEnrollment extends Model
     ];
 
     // cast
-    protected $casts = [
+    protected $casts =  [
         'documents' => Json::class,
         'payments' => Json::class,
     ];
@@ -62,7 +62,7 @@ class StudentEnrollment extends Model
         return $this->belongsTo(SchoolYear::class, 'school_year_id');
     }
 
-    public function getArrayOfPayments($status)
+    public function updatePayment($status)
     {
         $payments = [];
         foreach ($this->payments as $key => $value) {
@@ -83,5 +83,5 @@ class StudentEnrollment extends Model
         }
         return false;
     }
-    
+
 }

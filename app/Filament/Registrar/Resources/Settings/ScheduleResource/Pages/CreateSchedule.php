@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class CreateSchedule extends CreateRecord
 {
     protected static string $resource = ScheduleResource::class;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $subjectName = Subject::find($data['subject_id'])->name;
@@ -34,5 +35,10 @@ class CreateSchedule extends CreateRecord
             ]);
         }
         return $schedule;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Filament\Registrar\Resources\Students;
 
+use Carbon\Carbon;
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use App\Actions\Star;
 use App\Models\Section;
@@ -15,7 +17,10 @@ use App\Enums\DocumentTypeEnum;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\Students\Enrollee;
+use Filament\Support\Colors\Color;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\Tabs;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -29,27 +34,23 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Enums\StudentEnrollmentStatusEnum;
 use Filament\Infolists\Components\Actions;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Actions\BulkActionGroup;
 use Illuminate\Database\Eloquent\Collection;
 use App\Enums\StudentEnrollmentPaymentStatus;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Infolists\Components\RepeatableEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Section as InfoListSection;
 use Filament\Infolists\Components\Actions\Action as InfoListAction;
 use App\Filament\Registrar\Resources\Students\EnrolleeResource\Pages;
 use App\Filament\Registrar\Resources\Students\EnrolleeResource\RelationManagers;
 use App\Filament\Registrar\Resources\Students\EnrolleeResource\Widgets\EnrolleeOverview;
-use App\Models\User;
-use Carbon\Carbon;
-use Filament\Forms\Components\Select;
-use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\RepeatableEntry;
-use Filament\Support\Colors\Color;
-use Filament\Tables\Actions\RestoreAction;
-use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Hash;
 
 class EnrolleeResource extends Resource
 {
@@ -83,13 +84,6 @@ class EnrolleeResource extends Resource
                     ->where('school_year_id', $setting->school_year_id)
                     ->whereJsonContains('payments->status', StudentEnrollmentPaymentStatus::PENDING->value);
             });
-    }
-
-    public static function getHeaderWidgets(): array
-    {
-        return [
-            EnrolleeOverview::class,
-        ];
     }
 
     public static function form(Form $form): Form
@@ -145,24 +139,60 @@ class EnrolleeResource extends Resource
                         ->icon('heroicon-m-check-circle')
                         ->label('Accept Students')
                         ->color(Color::Green)
-                        ->action(function (array $data, Collection $records) {
+                        ->requiresConfirmation()
+                        ->modalDescription('Are you sure you want to accept the selected students?')
+                        ->action(function (Collection $records) {
+                            // count the successfully enrolled students
+                            $count = 0;
+                            $setting = getCurrentSetting();
                             foreach ($records as $record) {
                                 $section =  getSectionWithCapacityNotFull($record->enrollment->grade_level_id);
+
                                 if ($section) {
-                                    // Update status within the payments array
-                                    $payments = json_encode($record->enrollment->getArrayOfPayments(StudentEnrollmentPaymentStatus::PAID->value));
-                                    // Update enrollment status and section_id
-                                    $record
-                                        ->enrollment
-                                        ->update([
-                                            'status' => StudentEnrollmentStatusEnum::ACCEPTED->value,
-                                            'payments' => json_decode($payments, true),
-                                            'section_id' => $section->id,
-                                        ]);
-                                    // redirect user to enrolled students index
+                                    if (count($section->schedules) > 0) {
+                                        // Update status within the payments array
+                                        $payments = json_encode($record->enrollment->updatePayment(StudentEnrollmentPaymentStatus::PAID->value));
+                                        // Update enrollment status and section_id
+                                        $record
+                                            ->enrollment
+                                            ->update([
+                                                'status' => StudentEnrollmentStatusEnum::ACCEPTED->value,
+                                                'payments' => json_decode($payments, true),
+                                                'section_id' => $section->id,
+                                            ]);
+
+                                        foreach ($section->schedules as $key => $schedule) {
+                                            // create grade
+                                            $record->grades()->create([
+                                                'schedule_id' => $schedule->id,
+                                                'grade_level_id' => $record->enrollment->grade_level_id,
+                                                'school_year_id' => $setting->school_year_id,
+                                                'grades' => [
+                                                    'first' => 0,
+                                                    'second' => 0,
+                                                    'third' => 0,
+                                                    'fourth' => 0,
+                                                ]
+                                            ]);
+                                        }
+                                        if (!$record->user) {
+                                            $record->user()->create([
+                                                'name' => $record->full_name,
+                                                'email' => $record->email,
+                                                'email_verified_at' => now(),
+                                                'password' => Hash::make('password123'),
+                                                'role_id' => 4
+                                            ]);
+                                        }
+                                        $count++;
+                                    } else {
+                                        Notification::make()
+                                            ->title('Section has no schedules')
+                                            ->body('Section ' . $section->name . ' doesn`t have schedule. Please add schedule first')
+                                            ->danger()
+                                            ->send();
+                                    }
                                 } else {
-                                    // get admin and developers
-                                    // $users = User::whereIn('role_id', [1, 2])->get();
                                     Notification::make()
                                         ->title('Section Full')
                                         ->body('Section ' . $section->name . ' is Full')
@@ -170,21 +200,24 @@ class EnrolleeResource extends Resource
                                         ->send();
                                 }
                             }
-                            Notification::make()
-                                ->title('Successfully Accepted Students')
-                                ->body('Successfully accepted students and assigned them to their specified sections')
-                                ->success()
-                                ->send();
+                            if ($count > 0) {
+                                Notification::make()
+                                    ->title('Successfully Accepted Students')
+                                    ->body("Successfully accepted $count students and assigned them to their specified sections")
+                                    ->success()
+                                    ->send();
+                            }
                             if (countWithStatus(StudentEnrollmentStatusEnum::PENDING->value) == 0) {
                                 return redirect('registrar/students/enrolleds');
                             }
                             return redirect('registrar/students/enrollees');
                         }),
                     BulkAction::make('decline')
-                        ->requiresConfirmation()
                         ->icon('heroicon-m-x-circle')
-                        ->color(Color::Red)
                         ->label('Decline Students')
+                        ->color(Color::Red)
+                        ->requiresConfirmation()
+                        ->modalDescription('Are you sure you want to decline the selected students?')
                         ->action(function (Collection $records) {
                             foreach ($records as $record) {
                                 $record

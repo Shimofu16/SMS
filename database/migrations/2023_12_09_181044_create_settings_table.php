@@ -14,9 +14,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('settings', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('school_year_id')->constrained();
             $table->enum('current_grading', GradingEnum::toArray())->default(GradingEnum::FIRST);
-            $table->enum('enrollment_status', EnrollmentEnum::toArray())->default(EnrollmentEnum::CLOSE);
+            $table->boolean('is_grade_editable')->default(false);
+            // $table->enum('enrollment_status', EnrollmentEnum::toArray())->default(EnrollmentEnum::CLOSE);
+            $table->boolean('enrollment_status')->default(false);
+            $table->boolean('is_current')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
