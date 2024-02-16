@@ -84,13 +84,13 @@ class User extends  Authenticatable implements FilamentUser
             return $this->hasRole('administrator') && $this->hasVerifiedEmail();
         }
         if ($panel->getId() === 'registrar') {
-            return $this->hasRole('registrar') && $this->hasVerifiedEmail();
+            return $this->hasRole('administrator') || ($this->hasRole('registrar') && $this->hasVerifiedEmail());
         }
         if ($panel->getId() === 'teacher') {
-            return $this->hasRole('teacher') && $this->hasVerifiedEmail();
+            return $this->hasRole('administrator') || ($this->hasRole('teacher') && $this->hasVerifiedEmail());
         }
         if ($panel->getId() === 'student') {
-            return $this->hasRole('student') && $this->hasVerifiedEmail();
+            return $this->hasRole('administrator') || ($this->hasRole('student') && $this->hasVerifiedEmail());
         }
 
         return false;
