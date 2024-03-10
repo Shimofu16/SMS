@@ -2,13 +2,12 @@
 
 namespace App\Livewire\EnrollmentForm;
 
-use App\Enums\EnrollmentStudentTypeEnum;
-use App\Enums\StudentEnrollmentStatusEnum;
 use App\Models\Post;
+use App\Models\Student;
 use Livewire\Component;
 use Filament\Forms\Form;
 use App\Models\GradeLevel;
-use App\Models\Student;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Contracts\View\View;
@@ -17,14 +16,18 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Repeater;
+use App\Enums\EnrollmentStudentTypeEnum;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use App\Enums\StudentEnrollmentStatusEnum;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\MarkdownEditor;
+use Illuminate\Validation\ValidationException;
 use Filament\Forms\Concerns\InteractsWithForms;
 
+#[Layout('layouts.app')]
 class Create extends Component implements HasForms
 {
     use InteractsWithForms;
@@ -151,7 +154,10 @@ class Create extends Component implements HasForms
                 ])
                     // ->startOnStep(4)
                     ->nextAction(
-                        fn (Action $action) => $action->label('Next step'),
+                        fn (Action $action) => $action
+                            ->button()
+                            ->outlined()
+                            ->label('Next step'),
                     )
                     ->submitAction(new HtmlString('
                 <button type="submit"
@@ -235,6 +241,15 @@ class Create extends Component implements HasForms
                 ->send();
         }
     }
+
+    protected function onValidationError(ValidationException $exception): void
+    {
+        Notification::make()
+            ->title($exception->getMessage())
+            ->danger()
+            ->send();
+    }
+
     public function render(): View
     {
         return view('livewire.enrollment-form.create');

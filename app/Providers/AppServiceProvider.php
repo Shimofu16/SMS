@@ -23,23 +23,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
-        PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
-            $panelSwitch
-                ->slideOver()
-                ->modalWidth('sm')
-                ->excludes([
-                    'teacher',
-                    'student',
-                ])
-                ->visible(fn (): bool => auth()->user()->role->slug == 'administrator')
-                ->canSwitchPanels(fn (): bool => auth()->user()->role->slug == 'administrator');
-        });
-        Page::$reportValidationErrorUsing = function (ValidationException $exception) {
-            Notification::make()
-                ->title($exception->getMessage())
-                ->danger()
-                ->send();
-        };
+        
+        // PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
+        //     $panelSwitch
+        //         ->slideOver()
+        //         ->modalWidth('sm')
+        //         ->excludes([
+        //             'teacher',
+        //             'student',
+        //         ])
+        //         ->visible(fn (): bool => auth()->user()->role->slug == 'administrator')
+        //         ->canSwitchPanels(fn (): bool => auth()->user()->role->slug == 'administrator');
+        // });
+        // Page::$reportValidationErrorUsing = function (ValidationException $exception) {
+        //     Notification::make()
+        //         ->title($exception->getMessage())
+        //         ->danger()
+        //         ->send();
+        // };
     }
 }

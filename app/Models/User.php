@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 
-class User extends  Authenticatable implements FilamentUser
+class User extends  Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +25,7 @@ class User extends  Authenticatable implements FilamentUser
         'email_verified_at',
         'status',
         'password',
-        'is_force_password_change',
+        'is_force_to_password_change',
         'student_id',
         'teacher_id',
     ];
@@ -73,26 +72,26 @@ class User extends  Authenticatable implements FilamentUser
         return $this->belongsTo(Role::class, 'role_id');
     }
 
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         return  $this->role->slug == $role;
     }
 
-    public function canAccessPanel(Panel $panel): bool
-    {
-        if ($panel->getId() === 'admin') {
-            return $this->hasRole('administrator') && $this->hasVerifiedEmail();
-        }
-        if ($panel->getId() === 'registrar') {
-            return $this->hasRole('administrator') || ($this->hasRole('registrar') && $this->hasVerifiedEmail());
-        }
-        if ($panel->getId() === 'teacher') {
-            return $this->hasRole('administrator') || ($this->hasRole('teacher') && $this->hasVerifiedEmail());
-        }
-        if ($panel->getId() === 'student') {
-            return $this->hasRole('administrator') || ($this->hasRole('student') && $this->hasVerifiedEmail());
-        }
+    // public function canAccessPanel($panel): bool
+    // {
+    //     if ($panel->getId() === 'admin') {
+    //         return $this->hasRole('administrator') && $this->hasVerifiedEmail();
+    //     }
+    //     if ($panel->getId() === 'registrar') {
+    //         return $this->hasRole('administrator') || ($this->hasRole('registrar') && $this->hasVerifiedEmail());
+    //     }
+    //     if ($panel->getId() === 'teacher') {
+    //         return  $this->hasRole('teacher') && $this->hasVerifiedEmail();
+    //     }
+    //     if ($panel->getId() === 'student') {
+    //         return  $this->hasRole('student') && $this->hasVerifiedEmail();
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 }

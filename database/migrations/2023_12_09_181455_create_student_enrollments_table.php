@@ -24,7 +24,6 @@ return new class extends Migration
             $table->json('documents');
             $table->json('payments')->nullable();
             $table->enum('status', StudentEnrollmentStatusEnum::toArray()); // ['accepted', 'pending', 'declined']
-            
             $table->timestamps();
         });
     }

@@ -4,13 +4,14 @@ namespace Database\Seeders;
 
 use App\Enums\StudentEnrollmentPaymentStatus;
 use App\Enums\StudentEnrollmentStatusEnum;
-use App\Models\Role;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -19,37 +20,50 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = [
-            [
-                'name' => 'Administrator',
-                'slug' => 'administrator',
-            ],
-            [
-                'name' => 'Registrar',
-                'slug' => 'registrar',
-            ],
-            [
-                'name' => 'Teacher',
-                'slug' => 'teacher',
-            ],
-            [
-                'name' => 'Student',
-                'slug' => 'student',
-            ],
+        $permissions = [
+            ['name' => 'manage-settings'],
+            ['name' => 'add-setting'],
+            ['name' => 'edit-setting'],
+            
+            ['name' => 'manage-teachers'],
+            ['name' => 'add-teacher'],
+            ['name' => 'edit-teacher'],
+            ['name' => 'delete-teacher'],
+            
+            ['name' => 'manage-sections'],
+            ['name' => 'add-section'],
+            ['name' => 'edit-section'],
+            ['name' => 'delete-section'],
+            
+            ['name' => 'manage-subjects'],
+            ['name' => 'add-subject'],
+            ['name' => 'edit-subject'],
+            ['name' => 'delete-subject'],
+            
+            ['name' => 'manage-fees'],
+            ['name' => 'add-fee'],
+            ['name' => 'edit-fee'],
+            ['name' => 'delete-fee'],
+            
+            // ['name' => 'manage-fees'],
+            // ['name' => 'add-fee'],
+            // ['name' => 'edit-fee'],
+            // ['name' => 'delete-fee'],
+
         ];
-        foreach ($roles as $role) {
-            Role::create($role);
+
+        foreach ($permissions as $key => $permission) {
+            Permission::create($permission);
         }
+
+        $administrator = Role::create(['name' => 'administrator']);
+        $registrar = Role::create(['name' => 'registrar']);
+        $teacher = Role::create(['name' => 'teacher']);
+        $student = Role::create(['name' => 'student']);
+        
+        
         $setting = getCurrentSetting();
-        $teacher = Teacher::find(1);
-        // $student = Student::with('enrollments')
-        //     ->whereHas('enrollments', function ($query) use ($setting) {
-        //         $query
-        //             ->where('school_year_id', $setting->school_year_id)
-        //             ->whereJsonContains('payments->status', StudentEnrollmentPaymentStatus::PAID->value)
-        //             ->where('status', StudentEnrollmentStatusEnum::ACCEPTED->value);
-        //     })
-        //     ->first();
+        $teach = Teacher::find(1);
         $users = [
             [
                 'name' => 'Administrator',
@@ -64,16 +78,15 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
             ],
             [
-                'name' => $teacher->name,
-                'email' => $teacher->email,
-                'teacher_id' => $teacher->id,
+                'name' => $teach->name,
+                'email' => $teach->email,
+                'teacher_id' => $teach->id,
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
             ],
         ];
         foreach ($users as $key => $user) {
             $user =  User::create($user);
-            $user->assignRole($key + 1);
         }
     }
 }

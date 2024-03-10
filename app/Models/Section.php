@@ -7,6 +7,7 @@ use App\Enums\StudentEnrollmentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Kenepa\ResourceLock\Models\Concerns\HasLocks;
 
 class Section extends Model
 {

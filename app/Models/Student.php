@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kenepa\ResourceLock\Models\Concerns\HasLocks;
 
 class Student extends Model
 {

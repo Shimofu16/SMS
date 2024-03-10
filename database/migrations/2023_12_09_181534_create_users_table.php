@@ -20,8 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('status', UserStatusEnum::toArray())->default(UserStatusEnum::INACTIVE);
             $table->string('password');
-            $table->boolean('is_force_password_change')->default(false);
-            $table->foreignId('role_id')->nullable()->constrained();
+            $table->boolean('is_force_to_password_change')->default(false);
             $table->foreignId('student_id')->nullable()->constrained();
             $table->foreignId('teacher_id')->nullable()->constrained();
             $table->rememberToken();

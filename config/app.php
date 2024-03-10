@@ -167,11 +167,12 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\Filament\AdminPanelProvider::class,
-        App\Providers\Filament\RegistrarPanelProvider::class,
-        App\Providers\Filament\TeacherPanelProvider::class,
-        App\Providers\Filament\StudentPanelProvider::class,
+        // App\Providers\Filament\AdminPanelProvider::class,
+        // App\Providers\Filament\RegistrarPanelProvider::class,
+        // App\Providers\Filament\TeacherPanelProvider::class,
+        // App\Providers\Filament\StudentPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\VoltServiceProvider::class,
     ])->toArray(),
 
     /*
