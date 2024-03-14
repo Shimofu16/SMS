@@ -1,16 +1,17 @@
 <?php
 
 
-use App\Livewire\EnrollmentForm\Create;
-use App\Livewire\Pages\Settings\GeneralSettingList;
-use App\Livewire\Pages\Settings\ScheduleList;
-use App\Livewire\Pages\Settings\SchoolYearList;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Forms\EnrollmentForm;
 use App\Livewire\Pages\Settings\SectionList;
 use App\Livewire\Pages\Settings\SubjectList;
 use App\Livewire\Pages\Settings\TeacherList;
+use App\Livewire\Pages\Settings\ScheduleList;
+use App\Livewire\Pages\Settings\SchoolYearList;
+use App\Livewire\Pages\Settings\AnnouncementList;
+use App\Livewire\Pages\Settings\GeneralSettingList;
 use App\Livewire\Pages\Students\EnrolledStudentList;
 use App\Livewire\Pages\Students\EnrolleeStudentList;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', Create::class)->name('enrollment-form');
+Route::get('/', EnrollmentForm::class)->name('enrollment-form');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -36,6 +37,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/enrollee/list', EnrolleeStudentList::class)->name('enrollee.index');
     });
     Route::prefix('settings')->name('settings.')->group(function () {
+        Route::prefix('announcements')->name('announcements.')->group(function () {
+            Route::get('/list', AnnouncementList::class)->name('index');
+        });
         Route::prefix('subjects')->name('subjects.')->group(function () {
             Route::get('/list', SubjectList::class)->name('index');
         });
@@ -53,8 +57,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
         Route::prefix('general')->name('general.')->group(function () {
             Route::get('/list', GeneralSettingList::class)->name('index');
-        });
-        Route::prefix('announcements')->name('announcements.')->group(function () {
         });
     });
 });

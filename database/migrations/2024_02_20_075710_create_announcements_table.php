@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('attachments')->nullable();
             $table->json('links')->nullable();
             $table->json('send_to_roles')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

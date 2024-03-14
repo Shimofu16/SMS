@@ -29,12 +29,17 @@ new class extends Component {
 
                 <!-- Navigation Links -->
                 <ul class="hidden space-x-8 p-4 sm:ms-10 sm:flex items-center">
-                    <li class="p-0">
+                    <li>
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </li>
-                    <li class="relative group p-0">
+                    <li>
+                        <x-nav-link :href="route('settings.announcements.index')" :active="request()->routeIs('settings.announcements.index')">
+                            {{ __('Announcements') }}
+                        </x-nav-link>
+                    </li>
+                    <li class="relative group ">
                         <x-nav-link :href="route('students.enrollee.index')" :active="request()->routeIs('students.enrolled.index')" :active="request()->routeIs('students.enrollee.index')">
                             {{ __('Students') }}
                         </x-nav-link>
@@ -54,7 +59,7 @@ new class extends Component {
                             </div>
                         </div>
                     </li>
-                    <li class="relative group p-0">
+                    <li class="relative group ">
                         <x-nav-link :href="route('settings.general.index')" :active="request()->routeIs('settings.general.index')">
                             {{ __('Settings') }}
                         </x-nav-link>

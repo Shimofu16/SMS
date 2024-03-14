@@ -252,7 +252,6 @@ class EnrolleeStudentList extends Component implements HasForms, HasTable
                         ->label('Accept Students')
                         ->color(Color::Green)
                         ->requiresConfirmation()
-                        ->button()
                         ->modalDescription('Are you sure you want to accept the selected students?')
                         ->action(function (Collection $records) {
                             // count the successfully enrolled students
@@ -301,14 +300,14 @@ class EnrolleeStudentList extends Component implements HasForms, HasTable
                                     } else {
                                         Notification::make()
                                             ->title('Section has no schedules')
-                                            ->body('Section ' . $section->name . ' doesn`t have schedule. Please add schedule first')
+                                            ->body("Section $section->name  doesn`t have schedule. Please add schedule first")
                                             ->danger()
                                             ->send();
                                     }
                                 } else {
                                     Notification::make()
                                         ->title('Section Full')
-                                        ->body('Section ' . $section->name . ' is Full')
+                                        ->body("Section $section->name  is Full")
                                         ->danger()
                                         ->send();
                                 }
@@ -321,16 +320,15 @@ class EnrolleeStudentList extends Component implements HasForms, HasTable
                                     ->send();
                             }
                             if (countWithStatus(StudentEnrollmentStatusEnum::PENDING->value) == 0) {
-                                return redirect(route('students.enrolled'));
+                                return redirect(route('students.enrolled.index'));
                             }
-                            return redirect(route('students.enrollee'));
+                            return redirect(route('students.enrollee.index'));
                         }),
                     BulkAction::make('decline')
                         ->icon('heroicon-m-x-circle')
                         ->label('Decline Students')
                         ->color(Color::Red)
                         ->requiresConfirmation()
-                        ->button()
                         ->modalDescription('Are you sure you want to decline the selected students?')
                         ->action(function (Collection $records) {
                             foreach ($records as $record) {
@@ -345,7 +343,7 @@ class EnrolleeStudentList extends Component implements HasForms, HasTable
                                     ->danger()
                                     ->send();
                             }
-                            return redirect('registrar/students/enrollees');
+                            return redirect(route('students.enrollee.index'));
                         })
                         ->disabled(function () {
                             $count = countWithStatus(StudentEnrollmentStatusEnum::DECLINED->value);

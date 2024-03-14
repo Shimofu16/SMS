@@ -82,6 +82,7 @@ class SectionList extends Component implements HasForms, HasTable
             ])
             ->query(
                 SectionModel::query()
+                ->orderBy('grade_level_id', 'ASC')
 
             )
             ->columns([

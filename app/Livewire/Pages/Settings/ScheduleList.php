@@ -122,7 +122,7 @@ class ScheduleList extends Component implements HasForms, HasTable
                     })
                     ->using(function (array $data, string $model): Model {
                         $classes = $data['classes'];
-                        $schedule = static::getModel()::create($data);
+                        $schedule = Schedule::create($data);
                         foreach ($classes as $key => $class) {
                             ScheduleClass::create([
                                 'schedule_id' => $schedule->id,
@@ -164,7 +164,29 @@ class ScheduleList extends Component implements HasForms, HasTable
                 TrashedFilter::make(),
             ])
             ->actions([
-                ViewAction::make(),
+                ViewAction::make()
+                    ->infolist(
+                        function (Infolist $infolist): Infolist {
+                            return $infolist
+                                ->schema([
+                                    RepeatableEntry::make('classes')
+                                        ->schema([
+                                            TextEntry::make('date')
+                                                ->date(),
+                                            Group::make([
+                                                TextEntry::make('start')
+                                                    ->time('h:m A'),
+                                                TextEntry::make('end')
+                                                    ->time('h:m A'),
+
+                                            ])
+                                                ->columns(2)
+
+                                        ])
+                                        ->columnSpanFull(2)
+                                ]);
+                        }
+                    ),
                 EditAction::make()
                     ->form([
                         Section::make('Schedule Information')

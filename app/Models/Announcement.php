@@ -6,10 +6,11 @@ use App\Casts\Json;
 use Illuminate\Database\Eloquent\Model;
 use Kenepa\ResourceLock\Models\Concerns\HasLocks;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Announcement extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',

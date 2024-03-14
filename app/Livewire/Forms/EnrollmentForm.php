@@ -1,21 +1,17 @@
 <?php
 
-namespace App\Livewire\EnrollmentForm;
+namespace App\Livewire\Forms;
 
-use App\Models\Post;
 use App\Models\Student;
 use Livewire\Component;
 use Filament\Forms\Form;
 use App\Models\GradeLevel;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\HtmlString;
-use Filament\Forms\Components\Tabs;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\Repeater;
 use App\Enums\EnrollmentStudentTypeEnum;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -23,18 +19,15 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use App\Enums\StudentEnrollmentStatusEnum;
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Validation\ValidationException;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 #[Layout('layouts.app')]
-class Create extends Component implements HasForms
+class EnrollmentForm extends Component implements HasForms
 {
     use InteractsWithForms;
 
     public ?array $data = [];
-
-
 
     public function mount(): void
     {
@@ -252,6 +245,6 @@ class Create extends Component implements HasForms
 
     public function render(): View
     {
-        return view('livewire.enrollment-form.create');
+        return view('livewire.forms.enrollment-form');
     }
 }
