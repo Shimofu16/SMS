@@ -173,6 +173,7 @@ return [
         // App\Providers\Filament\StudentPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\VoltServiceProvider::class,
+        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
     ])->toArray(),
 
     /*

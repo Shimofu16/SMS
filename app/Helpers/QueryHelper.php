@@ -76,6 +76,25 @@ if (!function_exists('countWithStatus')) {
             ->count();
     }
 }
+if (!function_exists('countWithSchoolYear')) {
+    /**
+     * Count the Students with status and school year.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function countWithStatusAndSchoolYear($status, $school_year_id)
+    {
+        return  Student::with('enrollments')
+            ->whereHas('enrollments', function ($query) use ($status, $school_year_id) {
+                $query
+                ->where('school_year_id', $school_year_id)
+                ->where('status', $status);
+            })
+            ->count();
+    }
+}
 if (!function_exists('isAllStudentsHasGrades')) {
     /**
      * Get current setting.

@@ -3,6 +3,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Forms\EnrollmentForm;
+use App\Livewire\Pages\Dashboard\DashboardPanel;
+use App\Livewire\Pages\Payments\AnnualFeeList;
 use App\Livewire\Pages\Settings\SectionList;
 use App\Livewire\Pages\Settings\SubjectList;
 use App\Livewire\Pages\Settings\TeacherList;
@@ -27,15 +29,18 @@ use App\Livewire\Pages\Students\EnrolleeStudentList;
 Route::get('/', EnrollmentForm::class)->name('enrollment-form');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return view('livewire.pages.dashboard.index');
-    })
-        ->name('dashboard');
+    Route::get('dashboard', DashboardPanel::class)->name('dashboard');
 
     Route::prefix('students')->name('students.')->group(function () {
         Route::get('/enrolled/list', EnrolledStudentList::class)->name('enrolled.index');
         Route::get('/enrollee/list', EnrolleeStudentList::class)->name('enrollee.index');
     });
+    Route::prefix('payments')->name('payments.')->group(function () {
+        Route::prefix('fees')->name('fees.')->group(function () {
+            Route::get('/list', AnnualFeeList::class)->name('index');
+        });
+    });
+
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::prefix('announcements')->name('announcements.')->group(function () {
             Route::get('/list', AnnouncementList::class)->name('index');

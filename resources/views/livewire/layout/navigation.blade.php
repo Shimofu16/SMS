@@ -60,6 +60,26 @@ new class extends Component {
                         </div>
                     </li>
                     <li class="relative group ">
+                        <x-nav-link :href="route('payments.fees.index')" :active="request()->routeIs('payments.fees.index')">
+                            {{ __('Payments') }}
+                        </x-nav-link>
+                        <div class="hidden group-hover:block max-h-64 w-100 overflow-auto absolute">
+                            <div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                <ul class="py-2 text-sm text-gray-900" aria-labelledby="dropdownLargeButton">
+                                    <li>
+                                        <a href="{{ route('payments.fees.index') }}"
+                                            class="block px-4 py-2 hover:bg-gray-300 ">Annual Fees</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block px-4 py-2 hover:bg-gray-300 ">Transactions</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="relative group ">
                         <x-nav-link :href="route('settings.general.index')" :active="request()->routeIs('settings.general.index')">
                             {{ __('Settings') }}
                         </x-nav-link>
