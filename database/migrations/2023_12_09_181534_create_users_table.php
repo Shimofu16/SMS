@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('status', UserStatusEnum::toArray())->default(UserStatusEnum::INACTIVE);
+            $table->enum('status', UserStatusEnum::toArray())->default(UserStatusEnum::ACTIVE);
             $table->string('password');
             $table->boolean('is_force_to_password_change')->default(false);
             $table->foreignId('student_id')->nullable()->constrained();

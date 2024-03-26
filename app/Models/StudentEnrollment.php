@@ -18,7 +18,6 @@ class StudentEnrollment extends Model
         'student_type',
         'department',
         'documents',
-        'payments',
         'status',
     ];
 

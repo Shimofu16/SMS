@@ -20,4 +20,5 @@ enum LevelEnum: string
         }
         return $array;
     }
+
 }

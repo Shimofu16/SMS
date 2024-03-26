@@ -668,13 +668,122 @@ class AnnualFeeSeeder extends Seeder
                 'school_year_id' => $school_year->id,
             ],
         ];
+        /* SHS (Grade 11 - 12) */
+        $shs = [
+            [
+                'name' => 'Basic Tuition',
+                'amount' => 11750,
+                'type' => FeeTypeEnum::BASIC_TUITION->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Science Lab Dev Fee',
+                'amount' => 1500,
+                'type' => FeeTypeEnum::DEVELOPMENT_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Computer Lab Dev Fee',
+                'amount' => 1500,
+                'type' => FeeTypeEnum::DEVELOPMENT_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Digital A/V ITCS',
+                'amount' => 2500,
+                'type' => FeeTypeEnum::DEVELOPMENT_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Leaning Mgt. System',
+                'amount' => 5000,
+                'type' => FeeTypeEnum::DEVELOPMENT_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Library (Virtual) Dev',
+                'amount' => 3000,
+                'type' => FeeTypeEnum::DEVELOPMENT_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Registration Fee',
+                'amount' => 150,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Processing Fee',
+                'amount' => 150,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Permanent Records',
+                'amount' => 300,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'School ID',
+                'amount' => 300,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Class Picture',
+                'amount' => 100,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Insurance',
+                'amount' => 800,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Technology',
+                'amount' => 500,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Maintenance & Utilities',
+                'amount' => 2000,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+            [
+                'name' => 'Student Manual',
+                'amount' => 500,
+                'type' =>  FeeTypeEnum::MISCELLANEOUS_FEES->value,
+                'level' => LevelEnum::SENIOR_HIGHSCHOOL->value,
+                'school_year_id' => $school_year->id,
+            ],
+        ];
         $data = array_merge(
             $preschool_1,
             $preschool_2,
             $preschool_3,
             $elementary_1,
             $elementary_2,
-            $jhs
+            $jhs,
+            $shs
         );
         foreach ($data as $item) {
             AnnualFee::create($item);

@@ -13,12 +13,26 @@ class SchoolYearSeeder extends Seeder
      */
     public function run(): void
     {
-        $school_years = [
-            'slug' => '2021-2022',
-            'start_date' => '2021-08-01',
-            'end_date' => '2022-05-31',
-            
+        $schoolYears = [
+            [
+                'slug' => '2021-2022',
+                'start_date' => '2021-08-01',
+                'end_date' => '2022-05-31',
+            ],
+            [
+                'slug' => '2022-2023',
+                'start_date' => '2022-08-01',
+                'end_date' => '2023-05-31',
+            ],
+            [
+                'slug' => '2023-2024',
+                'start_date' => '2023-08-01',
+                'end_date' => '2024-05-31',
+            ],
         ];
-        SchoolYear::create($school_years);
+
+        foreach ($schoolYears as $year) {
+            SchoolYear::create($year);
+        }
     }
 }

@@ -6,14 +6,14 @@ enum StudentEnrollmentPaymentStatus: string
 {
     case PAID = 'paid';
     case PENDING = 'pending';
-    case DECLINED = 'declined';
+    case OVERDUE = 'Overdue';
 
     public function getLabel(): string
     {
         return match ($this) {
             self::PAID => 'Paid',
             self::PENDING => 'Pending',
-            self::DECLINED => 'Declined',
+            self::OVERDUE => 'Overdue',
         };
     }
 

@@ -1,8 +1,9 @@
 <?php
 
+use App\Models\AnnualFee;
 use App\Models\SchoolYear;
 use App\Models\Section;
-use App\Models\Setting;
+use App\Models\EnrollmentSetting;
 use App\Models\Student;
 use App\Models\StudentGrade;
 
@@ -16,7 +17,7 @@ if (!function_exists('getCurrentSetting')) {
      */
     function getCurrentSetting()
     {
-        return Setting::where('is_current', true)->first();
+        return EnrollmentSetting::where('is_current', true)->first();
     }
 }
 
@@ -59,7 +60,7 @@ if (!function_exists('getSectionWithCapacityNotFull')) {
 }
 
 
-if (!function_exists('countWithStatus')) {
+if (!function_exists('countStudentsWithStatus')) {
     /**
      * Get current setting.
      *
@@ -67,7 +68,7 @@ if (!function_exists('countWithStatus')) {
      * @param mixed $default
      * @return mixed
      */
-    function countWithStatus($status)
+    function countStudentsWithStatus($status)
     {
         return  Student::with('enrollments')
             ->whereHas('enrollments', function ($query) use ($status) {
@@ -84,15 +85,60 @@ if (!function_exists('countWithSchoolYear')) {
      * @param mixed $default
      * @return mixed
      */
-    function countWithStatusAndSchoolYear($status, $school_year_id)
+    function countStudentsWithStatusAndSchoolYear($status, $school_year_id)
     {
         return  Student::with('enrollments')
             ->whereHas('enrollments', function ($query) use ($status, $school_year_id) {
                 $query
-                ->where('school_year_id', $school_year_id)
-                ->where('status', $status);
+                    ->where('school_year_id', $school_year_id)
+                    ->where('status', $status);
             })
             ->count();
+    }
+}
+if (!function_exists('getStudentsWith')) {
+    /**
+     * Count the Students with status and school year.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function getStudentsWith($status, $school_year_id = null)
+    {
+        return  Student::with('enrollments')
+            ->whereHas('enrollments', function ($query) use ($school_year_id, $status) {
+                $query
+                    ->where('status', $status);
+                if ($school_year_id) {
+                    $query
+                        ->where('school_year_id', $school_year_id);
+                }
+            })
+            ->get();
+    }
+}
+if (!function_exists('getStudentsQueryWith')) {
+    /**
+     * Count the Students with status and school year.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function getStudentsQueryWith($status, $school_year_id = null)
+    {
+        return Student::query()
+            ->with('enrollments')
+            ->whereHas('enrollments', function ($query) use ($school_year_id, $status) {
+                $query
+                    ->where('status', $status);
+                if ($school_year_id) {
+                    $query
+                        ->where('school_year_id', $school_year_id);
+                }
+            })
+            ->get();
     }
 }
 if (!function_exists('isAllStudentsHasGrades')) {
@@ -149,5 +195,47 @@ if (!function_exists('isAllStudentsHasGrades')) {
             }
         }
         return $isALlHasGrades;
+    }
+}
+if (!function_exists('getTotalAmountFee')) {
+    /**
+     * Get current setting.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function getTotalAmountFee($level, $school_year_id = null)
+    {
+        $query = AnnualFee::where('level', $level);
+
+        if ($school_year_id !== null) {
+            $query->where('school_year_id', $school_year_id);
+        }
+
+        $amount = $query->sum('amount');
+
+        return $amount;
+    }
+}
+if (!function_exists('getTheStudentBalanceBy')) {
+    /**
+     * Get current setting.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function getTheStudentBalanceBy($student, $school_year_id)
+    {
+        $student = Student::with('enrollments')
+        ->whereHas('enrollments', function($query) use ($school_year_id) {
+            $query->where('school_year_id', $school_year_id);
+        })
+        ->first();
+
+        
+
+        return $amount;
     }
 }

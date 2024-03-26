@@ -17,12 +17,18 @@ enum EnrollmentStudentTypeEnum: string
         };
     }
 
-    public static function toArray()
+
+    public static function toArray($except = null)
     {
+        $exceptValues = is_array($except) ? $except : ($except !== null ? [$except] : []);
         $array = [];
+
         foreach (self::cases() as $case) {
-            $array[$case->value] = $case->value;
+            if (!in_array($case->value, $exceptValues)) {
+                $array[$case->value] = $case->value;
+            }
         }
+
         return $array;
     }
 }

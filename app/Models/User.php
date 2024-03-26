@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends  Authenticatable
+class User extends  Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -50,12 +50,7 @@ class User extends  Authenticatable
         'password' => 'hashed',
     ];
 
-    public function assignRole($role_id)
-    {
-        $this->update([
-            'role_id' => $role_id,
-        ]);
-    }
+
 
     public function teacher()
     {
@@ -67,15 +62,8 @@ class User extends  Authenticatable
         return $this->belongsTo(Student::class, 'student_id');
     }
 
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id');
-    }
 
-    public function hasRole($role): bool
-    {
-        return  $this->role->slug == $role;
-    }
+   
 
     // public function canAccessPanel($panel): bool
     // {

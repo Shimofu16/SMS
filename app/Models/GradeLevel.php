@@ -16,7 +16,7 @@ class GradeLevel extends Model
 
     public function settings()
     {
-        return $this->hasMany(Setting::class, 'grade_level_id');
+        return $this->hasMany(EnrollmentSetting::class, 'grade_level_id');
     }
 
     public function schedules()

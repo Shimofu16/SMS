@@ -24,7 +24,7 @@ class SchoolYear extends Model
 
     public function settings()
     {
-        return $this->hasMany(Setting::class, 'school_year_id');
+        return $this->hasMany(EnrollmentSetting::class, 'school_year_id');
     }
 
     public function schedules()

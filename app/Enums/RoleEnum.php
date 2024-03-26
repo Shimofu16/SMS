@@ -4,27 +4,23 @@ namespace App\Enums;
 
 enum RoleEnum: string
 {
-    case ADMIN = 'admin';
+    case ADMINISTRATOR = 'administrator';
     case REGISTRAR = 'registrar';
     case TEACHER = 'teacher';
     case STUDENT = 'student';
 
-    public function getLabel(): string
-    {
-        return match ($this) {
-            self::ADMIN => 'Admin',
-            self::REGISTRAR => 'Registrar',
-            self::TEACHER => 'Teacher',
-            self::STUDENT => 'Student',
-        };
-    }
 
-    public static function toArray()
+    public static function toArray($except = null)
     {
+        $exceptValues = is_array($except) ? $except : ($except !== null ? [$except] : []);
         $array = [];
+
         foreach (self::cases() as $case) {
-            $array[$case->value] = $case->value;
+            if (!in_array($case->value, $exceptValues)) {
+                $array[$case->value] = $case->value;
+            }
         }
+
         return $array;
     }
 }
